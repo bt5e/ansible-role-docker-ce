@@ -1,0 +1,59 @@
+---
+- name: uninstall old versions of docker
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker
+    - docker-common
+    - container-selinux
+    - docker-selinux
+    - docker-engine
+
+- name: install required packages for Docker CE
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+  become: yes
+
+- name: set up the Docker CE repository
+  command: >
+    yum-config-manager
+      --add-repo
+      https://download.docker.com/linux/centos/docker-ce.repo
+  become: yes
+
+- name: install Docker CE
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - docker-ce
+  become: yes
+
+- name: create /etc/docker directory
+  file:
+    path: /etc/docker
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  become: yes
+
+- name: copy daemon.json
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+- name: start docker
+  service:
+    name: docker
+    state: started
+  become: yes
+
