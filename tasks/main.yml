@@ -5,10 +5,16 @@
     state: absent
   with_items:
     - docker
+    - docker-client
+    - docker-client-latest
     - docker-common
-    - container-selinux
+    - docker-latest
+    - docker-latest-logrotate
+    - docker-logrotate
     - docker-selinux
+    - docker-engine-selinux
     - docker-engine
+  become: yes
 
 - name: Install required packages for Docker CE
   yum:
@@ -20,35 +26,20 @@
   become: yes
 
 - name: Set up the Docker CE repository
-  command: >
-    yum-config-manager
-      --add-repo
-      https://download.docker.com/linux/centos/docker-ce.repo
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/centos/gpg
   become: yes
 
 - name: Install Docker CE
   yum:
     name: "{{ item }}"
   with_items:
-    - docker-ce
-  become: yes
-
-- name: Create /etc/docker directory
-  file:
-    path: /etc/docker
-    owner: root
-    group: root
-    mode: 0755
-    state: directory
-  become: yes
-
-- name: Copy daemon.json
-  copy:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-    owner: root
-    group: root
-    mode: 0644
+    - docker-ce-18.03.0.ce
   become: yes
 
 - name: Start docker
