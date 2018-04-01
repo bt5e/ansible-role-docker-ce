@@ -1,6 +1,8 @@
 Ansible Role - Docker CE - CentOS
 =================================
 
+[![Build Status](https://travis-ci.org/bt5e/ansible-role-docker-ce.svg?branch=master)](https://travis-ci.org/bt5e/ansible-role-docker-ce)
+
 Docker CE non-production install based on: https://docs.docker.com/engine/installation/linux/centos/
 
 Requirements
