@@ -1,6 +1,4 @@
 ---
-services: docker
-
 env:
   - distro: centos7
 
