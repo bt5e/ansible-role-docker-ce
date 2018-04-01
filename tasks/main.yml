@@ -1,21 +1,4 @@
 ---
-- name: Uninstall old versions of docker
-  yum:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - docker
-    - docker-client
-    - docker-client-latest
-    - docker-common
-    - docker-latest
-    - docker-latest-logrotate
-    - docker-logrotate
-    - docker-selinux
-    - docker-engine-selinux
-    - docker-engine
-  become: yes
-
 - name: Install required packages for Docker CE
   yum:
     name: "{{ item }}"
