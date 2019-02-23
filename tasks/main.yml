@@ -1,11 +1,10 @@
 ---
 - name: Install required packages for Docker CE
   yum:
-    name: "{{ item }}"
-  with_items:
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
   become: yes
 
 - name: Set up the Docker CE repository
@@ -20,7 +19,10 @@
 
 - name: Install Docker CE
   yum:
-    name: docker-ce-18.06.1.ce
+    name:
+      - docker-ce-{{ docker_ce_version }}
+      - docker-ce-cli-{{ docker_ce_version }}
+      - containerd.io
   become: yes
 
 - name: Start docker
