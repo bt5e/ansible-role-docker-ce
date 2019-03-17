@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: docker_ce
   author: Ben Tse
   description: Docker CE
   license: MIT
